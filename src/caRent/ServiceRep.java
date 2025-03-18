@@ -1,5 +1,7 @@
 package caRent;
 
+import java.util.List;
+
 public class ServiceRep extends User {
 	
 	//additional fields for service representatives
@@ -7,8 +9,9 @@ public class ServiceRep extends User {
 	private String department;
 	
 	//explicit constructor for ServiceRep class
-	public ServiceRep(int userID, String username, String phoneNumber, String email, String passwordHash, boolean termsAccepted, int repID, String department) {
-		super(userID, username, phoneNumber, email, passwordHash, termsAccepted);
+	public ServiceRep(int userID, String firstName, String lastName, String phoneNumber, String email, String passwordHash,
+			boolean termsAccepted, String userType, int repID, String department) {
+		super(userID, firstName, lastName, phoneNumber, email, passwordHash, termsAccepted, userType);
 		this.repID = repID;
 		this.department = department;
 	}
@@ -32,18 +35,40 @@ public class ServiceRep extends User {
 	@Override
 	public void logout() {
 		// TODO Auto-generated method stub
-		System.out.println(getUsername() + " (ServiceRep) has been logged out");
+		System.out.println(getFirstName() + " (ServiceRep) has been logged out");
 	}
 	
 	//method for following up with a customer
 	//user in this case is a customer
 	public void followUp(User user) {
-		System.out.println("ServiceRep " + getUsername() + " is following up with user " + user.getUsername());
+	    if (user instanceof Customer) {
+	        Customer customer = (Customer) user;
+	        System.out.println("ServiceRep " + getFirstName() + " is following up with customer " + customer.getFirstName());
+	        
+	        // Fetch the customer's payment records using PaymentDAO
+	        // (Make sure PaymentDAO.getPaymentsByUserID is implemented and works correctly.)
+	        List<Payment> payments = PaymentDAO.getPaymentsByUserID(customer.getUserID());
+	        
+	        // Check if payments exist and display them
+	        if (payments.isEmpty()) {
+	            System.out.println("No payment records found for customer " + customer.getFirstName());
+	        } else {
+	            System.out.println("Payment records for customer " + customer.getFirstName() + ":");
+	            for (Payment payment : payments) {
+	                System.out.println(payment);
+	            }
+	        }
+	        
+	        // Future expansions can include retrieving reservations or support tickets similarly.
+	    } else {
+	        System.out.println("User is not a customer. Follow-up not applicable.");
+	    }
 	}
+
 	
 	//the method to handle the support ticket
 	public void handleIssue(SupportTicket ticket) {
-		System.out.println("ServiceRep " + getUsername() + " is handling ticket: " + ticket.getSubject());
+		System.out.println("ServiceRep " + getFirstName() + " is handling ticket: " + ticket.getSubject());
 	}
 	
 	

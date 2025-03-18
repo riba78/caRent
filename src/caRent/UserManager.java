@@ -91,8 +91,11 @@ public class UserManager {
                         if ("admin".equalsIgnoreCase(userType)) {
                             // The default employeeID is 0 for now.
                             user = new Admin(userID, firstName, lastName, phoneNumber, email, storedHash, termsAccepted, 0);
+                        } else if ("serviceRep".equalsIgnoreCase(userType)) {
+                            // Example: pass some default repID, department, etc. Adjust as needed.
+                            user = new ServiceRep(userID, firstName, lastName, phoneNumber, email, storedHash, termsAccepted, userType, 999, "Support");
                         } else {
-                            // Returns a verified instance of User.
+                            // Default to a verified user (or you can instantiate a Customer if you prefer).
                             user = new VerifiedUser(userID, firstName, lastName, phoneNumber, email, storedHash, termsAccepted);
                         }
                         

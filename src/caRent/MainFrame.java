@@ -27,12 +27,14 @@ public class MainFrame extends JFrame {
         logoutButton = new JButton("Logout");
         logoutButton.setVisible(false); // hidden by default when no one is logged in
 
-        // Logout action: clear currentUser, update header and remove admin tabs if any
+        // Logout action: clear currentUser, update header and remove all dynamic tabs
         logoutButton.addActionListener(e -> {
             // Optionally, call UserManager.signOut(currentUser) here
             setCurrentUser(null);
-            // Remove admin-specific tabs if present
             removeAdminTabs();
+            removeServiceRepTabs();
+            removeChatTab();
+            removeAssignmentTab();
             updateHeader();
         });
 
@@ -42,7 +44,6 @@ public class MainFrame extends JFrame {
 
         this.tabbedPane = new JTabbedPane();
 
-        // Wrap each form in a panel using FlowLayout so they keep their preferred size
         // Registration tab
         RegistrationForm registrationForm = new RegistrationForm();
         JPanel regWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -75,20 +76,38 @@ public class MainFrame extends JFrame {
     // Setter for currentUser; updates UI based on user role
     public void setCurrentUser(User user) {
         this.currentUser = user;
+        // Remove dynamic tabs when switching user
+        removeAdminTabs();
+        removeServiceRepTabs();
+        removeChatTab();
+        removeAssignmentTab();
+
         if (user != null) {
-            // Check user type via instanceof for more robust role detection
-            if (user instanceof Admin) {
+            String userType = user.getUserType() == null ? "" : user.getUserType().toLowerCase();
+
+            // Admin check
+            if (user instanceof Admin || "admin".equalsIgnoreCase(userType)) {
                 addAdminTabs();
-            } else if (user instanceof ServiceRep) {
+            }
+            // ServiceRep check
+            else if (user instanceof ServiceRep || "servicerep".equalsIgnoreCase(userType)) {
                 addServiceRepTabs();
+                addChatTab();
+            }
+            // Customer check
+            else if (user instanceof Customer || "customer".equalsIgnoreCase(userType)) {
+                addChatTab();
             }
             logoutButton.setVisible(true);
         } else {
-            // When no user is logged in, hide the logout button and remove admin/serviceRep tabs
             logoutButton.setVisible(false);
-            removeAdminTabs();
         }
         updateHeader();
+    }
+    
+    // Getter for the JTabbedPane
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
     }
 
     // Updates the header label based on currentUser state
@@ -122,9 +141,12 @@ public class MainFrame extends JFrame {
 
         // Add Reservation Report tab
         addReservationReportTab();
+
+        // **Add the Rep Assignment tab for admin only**
+        addAssignmentTab();
     }
 
-    // Optionally add serviceRep-specific tabs (if different from admin)
+    // Adds serviceRep-specific tabs if they are not already added
     private void addServiceRepTabs() {
         // For simplicity, we'll add the Reservation Report tab for service reps as well
         addReservationReportTab();
@@ -138,19 +160,70 @@ public class MainFrame extends JFrame {
                 return; // Reservation Report tab already exists
             }
         }
-        // Create an instance of ReservationReportForm (ensure that this class exists)
         ReservationReportForm reportPanel = new ReservationReportForm();
         tabbedPane.addTab("Reservation Report", reportPanel);
     }
 
-    // Removes admin/serviceRep-specific tabs when logging out
+    // Adds the Chat tab for customers and service reps
+    private void addChatTab() {
+        // Check if chat tab is already added
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            if ("Chat".equals(tabbedPane.getTitleAt(i))) {
+                return;
+            }
+        }
+        ChatTab chatTab = new ChatTab(currentUser);
+        JPanel chatWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        chatWrapper.add(chatTab);
+        tabbedPane.addTab("Chat", chatWrapper);
+    }
+
+    // Adds the Rep Assignment tab for admin users only
+    private void addAssignmentTab() {
+        // Check if the tab is already added
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            if ("Rep Assignment".equals(tabbedPane.getTitleAt(i))) {
+                return;
+            }
+        }
+        UserRepAssignmentForm assignmentForm = new UserRepAssignmentForm();
+        JPanel assignmentWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        assignmentWrapper.add(assignmentForm);
+        tabbedPane.addTab("Rep Assignment", assignmentWrapper);
+    }
+
+    // Removes admin-specific tabs
     private void removeAdminTabs() {
-        // Remove by checking the tab titles
         for (int i = tabbedPane.getTabCount() - 1; i >= 0; i--) {
             String title = tabbedPane.getTitleAt(i);
             if ("Manage Cars".equals(title) 
                     || "User Management".equals(title)
-                    || "Reservation Report".equals(title)) {
+                    || "Reservation Report".equals(title)
+                    || "Rep Assignment".equals(title)) {
+                tabbedPane.removeTabAt(i);
+            }
+        }
+    }
+
+    // Removes serviceRep-specific tabs (if any additional tabs are added)
+    private void removeServiceRepTabs() {
+        // Currently, serviceRep tabs include the Reservation Report (handled in removeAdminTabs).
+        // Add any additional removal logic here if needed.
+    }
+
+    // Removes the Chat tab
+    private void removeChatTab() {
+        for (int i = tabbedPane.getTabCount() - 1; i >= 0; i--) {
+            if ("Chat".equals(tabbedPane.getTitleAt(i))) {
+                tabbedPane.removeTabAt(i);
+            }
+        }
+    }
+
+    // Removes the Rep Assignment tab
+    private void removeAssignmentTab() {
+        for (int i = tabbedPane.getTabCount() - 1; i >= 0; i--) {
+            if ("Rep Assignment".equals(tabbedPane.getTitleAt(i))) {
                 tabbedPane.removeTabAt(i);
             }
         }
