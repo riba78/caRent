@@ -1,5 +1,12 @@
 package caRent;
 
+/**
+ * Swing form (JPanel) that handles user sign-in functionality.
+ * Allows existing users to log in and verifies their credentials.
+ *
+ * Used in: MainFrame (Sign In tab)
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

@@ -1,5 +1,12 @@
 package caRent;
 
+/**
+ * UserManagementForm is a Swing JPanel that allows an admin to view, edit, and delete users.
+ * It provides a graphical table view of all registered users and enables actions like removal.
+ *
+ * Used in: MainFrame (Admin tabs)
+ */
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

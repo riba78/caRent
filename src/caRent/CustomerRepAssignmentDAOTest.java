@@ -4,8 +4,8 @@ import java.util.List;
 
 public class CustomerRepAssignmentDAOTest {
     public static void main(String[] args) {
-        int testCustomerID = 1;  // Replace with a valid customer ID from your database.
-        int testRepID = 101;       // Replace with a valid rep ID.
+        int testCustomerID = 3;  // Replace with a valid customer ID from your database.
+        int testRepID = 1;       // Replace with a valid rep ID.
 
         // 1. Assign a rep to a customer.
         boolean assignSuccess = CustomerRepAssignmentDAO.assignRepToCustomer(testCustomerID, testRepID);

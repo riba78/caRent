@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Admin and ServiceRep panel (JPanel) to display all reservations for a selected car.
+ * Useful for reviewing booking history or identifying overlaps.
+ */
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

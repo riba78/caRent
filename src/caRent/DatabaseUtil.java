@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Utility class that provides a shared method to connect to the database.
+ * Used throughout the DAO layer to ensure consistent and reusable database access.
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

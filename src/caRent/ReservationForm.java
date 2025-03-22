@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Swing form (JFrame) used to finalize a reservation or purchase of a car.
+ * Collects start/end dates, calculates total cost, and initiates payment.
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.*;

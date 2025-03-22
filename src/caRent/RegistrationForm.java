@@ -1,5 +1,12 @@
 package caRent;
 
+/**
+ * Swing form (JPanel) for registering new users.
+ * Allows input of personal details and password, and validates terms acceptance.
+ *
+ * Used in: MainFrame tab "Register"
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

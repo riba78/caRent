@@ -1,5 +1,12 @@
 package caRent;
 
+/**
+ * A user interface form (JPanel) that allows users to search for available cars.
+ * Supports filtering by availability and initiating a reservation or purchase.
+ *
+ * Used in: MainFrame (visible to all users)
+ */
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

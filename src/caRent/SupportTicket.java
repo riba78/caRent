@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Domain class representing a customer support ticket.
+ * Used to track issues raised by users and handled by service representatives.
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,5 +1,11 @@
 package caRent;
 
+/**
+ * Represents a customer user in the caRent system.
+ * Extends the base User class and includes customer-specific behavior like
+ * listing reservations or interacting with a service representative.
+ */
+
 public class Customer extends User{
 	
 	//additional field for Customer class

@@ -1,5 +1,12 @@
 package caRent;
 
+/**
+ * Admin-only Swing form (JPanel) that enables car management operations.
+ * Allows adding, updating, and deleting cars from the inventory.
+ *
+ * Used in: MainFrame (Admin tab "Manage Cars")
+ */
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

@@ -1,5 +1,11 @@
 package caRent;
 
+/**
+ * Main application window for the caRent system.
+ * Displays all user interface tabs depending on user role (Admin, ServiceRep, Customer).
+ * Manages login state and tab visibility dynamically.
+ */
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -35,6 +41,7 @@ public class MainFrame extends JFrame {
             removeServiceRepTabs();
             removeChatTab();
             removeAssignmentTab();
+            removeAssignedCustomersTab();
             updateHeader();
         });
 
@@ -81,6 +88,7 @@ public class MainFrame extends JFrame {
         removeServiceRepTabs();
         removeChatTab();
         removeAssignmentTab();
+        removeManualPaymentTab();
 
         if (user != null) {
             String userType = user.getUserType() == null ? "" : user.getUserType().toLowerCase();
@@ -144,12 +152,22 @@ public class MainFrame extends JFrame {
 
         // **Add the Rep Assignment tab for admin only**
         addAssignmentTab();
+        
+        // Add Manual Payment tab
+        addManualPaymentTab();
+        
+        addAssignedCustomersTab();
     }
 
     // Adds serviceRep-specific tabs if they are not already added
     private void addServiceRepTabs() {
         // For simplicity, we'll add the Reservation Report tab for service reps as well
         addReservationReportTab();
+        
+     // Add Manual Payment tab
+        addManualPaymentTab();
+        
+        addAssignedCustomersTab();
     }
 
     // Adds the Reservation Report tab if not already added
@@ -228,6 +246,47 @@ public class MainFrame extends JFrame {
             }
         }
     }
+    
+    private void addManualPaymentTab() {
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            if ("Manual Payment".equals(tabbedPane.getTitleAt(i))) return;
+        }
+        JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        wrapper.add(new ManualPaymentPanel());
+        tabbedPane.addTab("Manual Payment", wrapper);
+    }
+    
+    private void removeManualPaymentTab() {
+        for (int i = tabbedPane.getTabCount() - 1; i >= 0; i--) {
+            if ("Manual Payment".equals(tabbedPane.getTitleAt(i))) {
+                tabbedPane.removeTabAt(i);
+            }
+        }
+    }
+
+    private void addAssignedCustomersTab() {
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            if ("My Customers".equals(tabbedPane.getTitleAt(i))) return;
+        }
+        if (currentUser instanceof ServiceRep) {
+            tabbedPane.addTab("My Customers", new AssignedCustomersForm((ServiceRep) currentUser));
+        } else if (currentUser instanceof Admin) {
+            // For Admin, optionally allow viewing customers via default repID (e.g., 0)
+            ServiceRep dummyRep = new ServiceRep(
+                0, "Admin", "", "", "", "", true, "admin", 0, "N/A"
+            );
+            tabbedPane.addTab("My Customers", new AssignedCustomersForm(dummyRep));
+        }
+    }
+
+    private void removeAssignedCustomersTab() {
+        for (int i = tabbedPane.getTabCount() - 1; i >= 0; i--) {
+            if ("My Customers".equals(tabbedPane.getTitleAt(i))) {
+                tabbedPane.removeTabAt(i);
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Represents a service representative who provides personal support to customers.
+ * Inherits from User and adds support-specific operations like following up on reservations.
+ */
+
 import java.util.List;
 
 public class ServiceRep extends User {
@@ -70,22 +75,5 @@ public class ServiceRep extends User {
 	public void handleIssue(SupportTicket ticket) {
 		System.out.println("ServiceRep " + getFirstName() + " is handling ticket: " + ticket.getSubject());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

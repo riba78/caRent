@@ -130,6 +130,43 @@ public class CustomerRepAssignmentDAO {
         }
     }
     
+    public static List<User> getCustomersForRep(int repID) {
+        List<User> customers = new ArrayList<>();
+
+        String sql = "SELECT u.userID, u.firstName, u.lastName, u.phoneNumber, u.email, u.passwordHash, u.termsAccepted " +
+                     "FROM CustomerRepAssignments a " +
+                     "JOIN Users u ON a.customerID = u.userID " +
+                     "WHERE a.repID = ? AND u.userType = 'customer'";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, repID);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // Create VerifiedUser or Customer instance
+                    User customer = new VerifiedUser(
+                        rs.getInt("userID"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("email"),
+                        rs.getString("passwordHash"),
+                        rs.getBoolean("termsAccepted")
+                    );
+                    customers.add(customer);
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return customers;
+    }
+
+    
    
     // Optionally, add methods like removeAssignment(...) or updateAssignment(...) if needed.
 }

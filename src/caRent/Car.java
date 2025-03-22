@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Represents a car available for rent or purchase in the caRent system.
+ * Includes details like model, year, pricing, and availability status.
+ */
+
 public class Car {
 	private int carID;
 	private String make; //the year of production

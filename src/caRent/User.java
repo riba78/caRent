@@ -1,5 +1,13 @@
 package caRent;
 
+/**
+ * Abstract base class for all user types in the caRent system.
+ * Represents common properties such as name, contact information, login credentials,
+ * and user type.
+ *
+ * Subclasses include: Customer, ServiceRep, Admin, VerifiedUser.
+ */
+
 public abstract class User {
 	//Fields
 	private int userID;

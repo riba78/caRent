@@ -128,4 +128,40 @@ public class ReservationDAO {
         }
         return reservations;
     }
+    
+    public static List<Reservation> getReservationsByUserID(int userID) {
+        List<Reservation> reservations = new ArrayList<>();
+
+        String sql = "SELECT reservation_id, user_id, car_id, start_date, end_date, total_cost, reservation_type, reservation_status " +
+                     "FROM Reservations WHERE user_id = ? ORDER BY start_date";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userID);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Reservation reservation = new Reservation(
+                        rs.getInt("reservation_id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("car_id"),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getDouble("total_cost"),
+                        rs.getString("reservation_type")
+                    );
+                    // Optionally add: reservation.setStatus(rs.getString("reservation_status"));
+
+                    reservations.add(reservation);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return reservations;
+    }
+
 }

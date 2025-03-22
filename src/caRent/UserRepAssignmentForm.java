@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Admin-only panel (JPanel) to assign or reassign service representatives to customers.
+ * Displays all users and allows linking customers to reps using CustomerRepAssignmentDAO.
+ */
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

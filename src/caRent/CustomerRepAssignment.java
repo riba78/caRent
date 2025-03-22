@@ -1,5 +1,10 @@
 package caRent;
 
+/**
+ * Represents a link between a customer and their assigned service representative.
+ * This is a data-transfer object corresponding to the CustomerRepAssignments table.
+ */
+
 import java.sql.Timestamp;
 
 public class CustomerRepAssignment {
